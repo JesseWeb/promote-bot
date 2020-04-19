@@ -1,0 +1,21 @@
+{
+  "name": "wechaty-demo",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --ext js,ts --exec 'ts-node main.ts --inspect'"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "node-cache": "^5.1.0",
+    "qrcode-terminal": "^0.12.0",
+    "rx-queue": "^0.8.5",
+    "typescript": "^3.8.3",
+    "wechaty": "^0.38.4",
+    "wechaty-puppet-padplus": "^0.6.1"
+  },
+  "devDependencies": {
+    "@chatie/tsconfig": "^0.8.0"
+  }
+}

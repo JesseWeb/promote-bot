@@ -1,0 +1,12 @@
+{
+   "compilerOptions": {
+      "target": "es2019",
+      "sourceMap": true,
+      "outDir": "out"
+   },
+   "extends": "@chatie/tsconfig",
+   "exclude": [
+      "node_modules",
+      "**/node_modules/*"
+   ]
+}
