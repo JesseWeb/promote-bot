@@ -3,7 +3,7 @@ import './config/load_env'
 import { Chatops } from './chatops'
 import { Wechaty } from 'wechaty';
 const absPath = (relatedPath: string) => path.join(__dirname, relatedPath);
-export default async (bot:Wechaty) => {
+export default async (bot: Wechaty) => {
    bot.on('login', absPath('./handlers/on-login'))
    bot.on('friendship', absPath('./handlers/on-friendship.ts'))
    bot.on('scan', absPath('./handlers/on-scan.ts'))
@@ -20,5 +20,5 @@ export default async (bot:Wechaty) => {
    setInterval(heartbeat('[爱心]'), ONE_HOUR)
    bot.on('login', heartbeat(`[太阳] (${bot.name()})`))
    bot.on('ready', heartbeat(`[拳头] (${bot.name()})`))
-   bot.on('logout', heartbeat(`[月亮] (${bot.name()})`))
+   // bot.on('logout', heartbeat(`[月亮] (${bot.name()})`))
 }

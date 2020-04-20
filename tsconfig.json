@@ -4,6 +4,8 @@
       "sourceMap": true,
       "outDir": "out"
    },
+   "experimentalDecorators": true,
+   "emitDecoratorMetadata": true,
    "extends": "@chatie/tsconfig",
    "exclude": [
       "node_modules",

@@ -2,7 +2,7 @@
 
 import { Wechaty, log, Message, Contact, UrlLink, MiniProgram, Room } from 'wechaty';
 import { DelayQueueExecutor, DelayQueueExector } from 'rx-queue'
-import { TEST_ROOM_ID, HEARTBEAT_ROOM_ID } from './config/config'
+import { TEST_ROOM_ID, HEARTBEAT_ROOM_ID} from './config/config'
 export class Chatops {
    public static bot: Chatops
    private delayQueueExecutor: DelayQueueExector
@@ -28,6 +28,47 @@ export class Chatops {
          await contact.say('您还未绑定账号\n请发送 #bd+“您的绑定码”\n如：\n#bd12345')
       }, `friendship confirm with` + contact.name())
    }
+   public async say2Friend(idOrContact: Contact | string, info: string | Message | UrlLink | MiniProgram) {
+      let contact: null | Contact
+      if (idOrContact instanceof Contact) {
+         contact = idOrContact
+      } else {
+         contact = await this.wechaty.Contact.load(idOrContact)
+      }
+      let contactId = contact.id
+      if (!this.wechaty.logonoff()) {
+         log.error('chat', 'say2Friend() bot is offline')
+         throw new Error('say2Friend() bot is offline')
+      }
+      if (!contact) {
+         log.error('chat', 'say2Friend() no contact found %s', contactId)
+         throw new Error(`say2Friend() no contact found ${contactId}`)
+      }
+      if (typeof info === 'string') {
+         await contact.say(info)
+      } else if (info instanceof Message) {
+         switch (info.type()) {
+            case Message.Type.Text:
+               await contact.say(`${info}`)
+               break
+            case Message.Type.Image:
+               const image = await info.toFileBox()
+               contact.say(image)
+               break
+            case Message.Type.Url:
+               const urlLink = await info.toUrlLink()
+               await contact.say(urlLink)
+               break
+            default:
+               const typeName = Message.Type[info.type()]
+               await contact.say(`message type: ${typeName}`)
+               break
+         }
+      } else if (info instanceof UrlLink) {
+         await contact.say(info)
+      }
+      return
+   }
    public async sayWelcomeBack(contact: Contact) {
       await this.queue(async () => {
          await contact.say('您还未绑定账号\n请发送 #bd+“您的绑定码”\n如：\n#bd12345')
@@ -51,12 +92,12 @@ export class Chatops {
       info: string | Message | UrlLink | MiniProgram): Promise<void> {
       if (!this.wechaty.logonoff()) {
          log.error('chat', 'say2Room() bot is offline')
-         return
+         throw new Error('say2Room() bot is offline')
       }
       const room = await this.wechaty.Room.load(roomId)
       if (!room) {
          log.error('chat', 'say2Room() no bot found in Room %s', roomId)
-         return
+         throw new Error(`say2Room() no bot found in Room ${roomId}`)
       }
       if (typeof info === 'string') {
          await room.say(info)
@@ -81,6 +122,7 @@ export class Chatops {
       } else if (info instanceof UrlLink) {
          await room.say(info)
       }
+      return
    }
    public async repeaterFromUser(msg: Message, roomId?: string, userId?: string): Promise<void> {
 
@@ -121,9 +163,6 @@ export class Chatops {
       await this.delayQueueExecutor.execute(fn.bind(this), name)
       log.info('chat', 'queue(,"%s") finish.', name)
    }
-   // public start() {
-   //    return this.instance.start()
-   // }
    async idsToRooms(idOrList: string | string[]) {
       if (Array.isArray(idOrList)) {
          const roomList = await Promise.all(
