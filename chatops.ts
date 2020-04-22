@@ -1,8 +1,8 @@
 
 
-import { Wechaty, log, Message, Contact, UrlLink, MiniProgram, Room } from 'wechaty';
+import { Wechaty, log, Message, Contact, UrlLink, MiniProgram, Room, FileBox } from 'wechaty';
 import { DelayQueueExecutor, DelayQueueExector } from 'rx-queue'
-import { TEST_ROOM_ID, HEARTBEAT_ROOM_ID} from './config/config'
+import { TEST_ROOM_ID, HEARTBEAT_ROOM_ID } from './config/config'
 export class Chatops {
    public static bot: Chatops
    private delayQueueExecutor: DelayQueueExector
@@ -49,29 +49,39 @@ export class Chatops {
       } else if (info instanceof Message) {
          switch (info.type()) {
             case Message.Type.Text:
-               await contact.say(`${info}`)
+               await this.queue(async () => {
+                  await contact?.say(`${info}`)
+               }, 'say2friend')
                break
             case Message.Type.Image:
                const image = await info.toFileBox()
-               contact.say(image)
+               await this.queue(async () => {
+                  await contact?.say(image)
+               }, 'say2friend')
                break
             case Message.Type.Url:
                const urlLink = await info.toUrlLink()
-               await contact.say(urlLink)
+               await this.queue(async () => {
+                  await contact?.say(urlLink)
+               }, 'say2friend')
                break
             default:
                const typeName = Message.Type[info.type()]
-               await contact.say(`message type: ${typeName}`)
+               await this.queue(async () => {
+                  await contact?.say(`message type: ${typeName}`)
+               }, 'say2friend')
                break
          }
       } else if (info instanceof UrlLink) {
-         await contact.say(info)
+         await this.queue(async () => {
+            await contact?.say(info)
+         }, 'say2friend')
       }
       return
    }
    public async sayWelcomeBack(contact: Contact) {
       await this.queue(async () => {
-         await contact.say('您还未绑定账号\n请发送 #bd+“您的绑定码”\n如：\n#bd12345')
+         await contact.say('您还未绑定账号\n请发送 #bd+“您的绑定码”\n如：\n#bd12345\n发送"帮助"查看更多')
       }, `friendship confirm with` + contact.name())
    }
    public async msgRoomTopic(msg: Message) {
@@ -89,7 +99,7 @@ export class Chatops {
       return this.wechaty.logonoff()
    }
    public async say2Room(roomId: string,
-      info: string | Message | UrlLink | MiniProgram): Promise<void> {
+      info: string | Message | UrlLink | FileBox | MiniProgram): Promise<void> {
       if (!this.wechaty.logonoff()) {
          log.error('chat', 'say2Room() bot is offline')
          throw new Error('say2Room() bot is offline')
@@ -120,6 +130,8 @@ export class Chatops {
                break
          }
       } else if (info instanceof UrlLink) {
+         await room.say(info)
+      } else if (info instanceof FileBox) {
          await room.say(info)
       }
       return
