@@ -1,5 +1,5 @@
 import { Message, Wechaty, log } from 'wechaty'
-import { ROOMTOKEN, HELP_COMMAND, CONFIRM_UNBIND_ACCOUNT } from '../../config/config'
+import { JOIN_ROOM, HELP_COMMAND, CONFIRM_UNBIND_ACCOUNT } from '../../config/config'
 import { inviteMember, sayHelpList } from '../../operators'
 import { Chatops } from '../../chatops'
 import bindWechat from '../../operators/bindWechat'
@@ -30,7 +30,7 @@ export default async function onFriendMessage(this: Wechaty, msg: Message) {
          log.info(`on friend message: contact null`)
          return
       }
-      if (parsedText === ROOMTOKEN) {
+      if (parsedText === JOIN_ROOM) {
          await inviteMember.call(this, contact)
 
       } else if (parsedText == HELP_COMMAND) {

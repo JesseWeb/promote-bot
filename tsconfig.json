@@ -2,11 +2,12 @@
    "compilerOptions": {
       "target": "es2019",
       "sourceMap": true,
-      "outDir": "out"
+      "outDir": "dist"
    },
-   // "noImplicitAny":false,
+   "noImplicitAny":false,
    "experimentalDecorators": true,
    "emitDecoratorMetadata": true,
+   "esModuleInterop":true,
    "extends": "@chatie/tsconfig",
    "exclude": [
       "node_modules",
@@ -14,6 +15,6 @@
    ],
    "include": [
       "typings.d.ts",
-      "**/*.ts"
-   ]
+   ],
+   "typs":["merge-images"]
 }
