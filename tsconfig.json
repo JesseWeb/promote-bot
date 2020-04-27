@@ -2,7 +2,15 @@
    "compilerOptions": {
       "target": "es2019",
       "sourceMap": true,
-      "outDir": "dist"
+      "outDir": "dist",
+      "baseUrl": ".",
+      // "paths": {
+      //    "*":["types/*"]
+      // },
+      "typeRoots": [
+         "./types"
+      ],
+      // "types":["merge-images"]
    },
    "noImplicitAny":false,
    "experimentalDecorators": true,
@@ -14,7 +22,7 @@
       "**/node_modules/*"
    ],
    "include": [
-      "typings.d.ts",
-   ],
-   "typs":["merge-images"]
+      "*"
+   ]
+ 
 }
