@@ -1,5 +1,5 @@
 import { Contact, Room } from "wechaty";
-import { CreateRoom, UpdateRoom, FindRoom } from "../dao/Room";
+import { CreateRoom, UpdateRoom, FindRoom, FindOneRoom } from "../dao/Room";
 import { GetUserByWechat } from "../dao/User";
 
 export const S_CreateRoomByContact = async (room: Room, contact: Contact, status: number = 1) => {
@@ -27,15 +27,33 @@ export const S_UnbindRoomByContact = async (room: Room, contact: Contact) => {
       status: 2
    })
 }
-export const S_UnbindAllRoomByContact = async (contact:Contact) => {
+export const S_UnbindAllRoomByContact = async (contact: Contact) => {
    await UpdateRoom({
-      wechat:contact.id
-   },{status:2})
+      wechat: contact.id
+   }, { status: 2 })
 }
-
+export const S_UnbindRoomById = async (id: number) => {
+   if (!id) {
+      throw new Error("id does not exist")
+   }
+   await UpdateRoom({
+      id,
+   }, {
+      status: 2
+   })
+}
 export const S_GetActiveRoom = async () => {
    let rooms = await FindRoom({
       status: 1
    })
    return rooms
 }
+export const S_GetActiveRoomByRoomId = async (roomid: string) => {
+   try {
+      let room = await FindOneRoom({ room_id: roomid, status: 1 })
+      return room
+   } catch (error) {
+      throw error
+   }
+}
+

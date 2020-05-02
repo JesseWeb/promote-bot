@@ -1,3 +1,4 @@
+import './config/load_env'
 import botStarter from './bot-starter'
 import { getWechaty } from './wechaty-provider'
 import connection from './connection';

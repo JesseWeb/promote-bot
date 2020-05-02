@@ -11,6 +11,13 @@ export const FindRoom = async (feilds: any) => {
       }
    })
 }
+export const FindOneRoom = async (feilds: any) => {
+   return Room.findOne({
+      where: {
+         ...feilds
+      }
+   })
+}
 export const UpdateRoom = async (feilds: any, document: any) => {
    Room.update(document, {
       where: {

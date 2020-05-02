@@ -23,6 +23,12 @@ export class Chatops {
    ) {
       this.delayQueueExecutor = new DelayQueueExecutor(5 * 1000)
    }
+   public findFriendByWeChat(wechat: string) {
+      return this.wechaty.Contact.load(wechat)
+   }
+   public findRoomByRoomId(roomId: string) {
+      return this.wechaty.Room.load(roomId)
+   }
    public async sayUnbind(contact: Contact) {
       await this.queue(async () => {
          await contact.say('您还未绑定账号\n请发送 #bd+“您的绑定码”\n如：\n#bd12345')
