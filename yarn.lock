@@ -4043,9 +4043,9 @@ symbol-observable@^1.2.0:
   integrity sha1-wiaIrtTqs83C3+rLtWFmBWCgCAQ=
 
 systeminformation@^4.23.3:
-  version "4.23.5"
-  resolved "https://registry.npm.taobao.org/systeminformation/download/systeminformation-4.23.5.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsysteminformation%2Fdownload%2Fsysteminformation-4.23.5.tgz#29223266108442bf1ef906df7bf7efb2ae44f219"
-  integrity sha1-KSIyZhCEQr8e+Qbfe/fvsq5E8hk=
+  version "4.34.19"
+  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-4.34.19.tgz#c5f066cc043482686d95bbc554d52e6ec9e42367"
+  integrity sha512-ssUYQ0s1FFeb8EGtyCX/41cC/XaF84gbNAUfaUTziibx+xCAaR0zrOy0yZlnUrsWDQ+snp/Utl8cx8IdtrevrA==
 
 tar@^4, tar@^4.4.2:
   version "4.4.13"
